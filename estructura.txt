@@ -1,0 +1,29 @@
+CheckU/
+│
+├── assets/                # Imágenes, íconos, logotipos
+│   ├── logo.png           # Logotipo de Check-U
+│   ├── fondo.jpg          # Imagen de fondo de la interfaz
+│   └── icono_qr.png       # Ícono QR o ilustraciones decorativas
+│
+├── database/              # Archivos relacionados a la base de datos
+│   ├── schema.sql         # Estructura SQL si usas MySQL
+│   └── conexión.py        # Archivo para conectar la base de datos (en caso de usar Python)
+│
+├── frontend/              # Archivos del lado del cliente (interfaz gráfica)
+│   ├── index.html         # Página principal
+│   ├── estilos.css        # Estilos visuales (colores, botones, etc.)
+│   └── script.js          # Lógica del cliente (lectura QR, validaciones, etc.)
+│
+├── backend/               # Lógica del servidor y controladores
+│   ├── app.py             # Archivo principal del servidor backend (si usas Flask o FastAPI)
+│   ├── controladores.py   # Funciones para manejar escaneo, entradas/salidas, etc.
+│   └── rutas.py           # Rutas de la API
+│
+├── qr_generator/          # Lógica para generar códigos QR
+│   ├── generador_qr.py    # Código para generar QR firmados
+│   └── utils.py           # Utilidades como firmas, validaciones, etc.
+│
+├── docs/                  # Documentación del proyecto
+│   └── descripcion.txt    # Documento de descripción del proyecto
+│
+└── README.md              # Instrucciones generales del proyecto

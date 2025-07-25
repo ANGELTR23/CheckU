@@ -1,0 +1,2299 @@
+Perfecto. A continuación te dejo una **descripción técnica completa y detallada del sistema Check-U**, en la versión que **utiliza la cámara del celular como escáner de QR**, junto con una estructura recomendada de carpetas y archivos para que se la compartas a Claude o a cualquier IA que genere el código.
+
+---
+
+## ✅ DESCRIPCIÓN GENERAL DEL SISTEMA — **Check-U (Versión Web Móvil con escaneo QR)**
+
+**Check-U** es una aplicación web de asistencia automatizada diseñada para instituciones educativas (aunque adaptable a empresas u organizaciones). El sistema permite registrar entradas y salidas mediante **códigos QR individuales** que los alumnos o empleados escanean **con la cámara de sus teléfonos celulares** desde una interfaz web.
+
+El enfoque principal es la **simplicidad, portabilidad y automatización**. No se necesita instalación de software externo. Todo se ejecuta desde un navegador moderno.
+
+---
+
+## 🎯 FUNCIONALIDADES PRINCIPALES
+
+### 1. **Generación de códigos QR**
+
+* Cada usuario tiene un código QR único vinculado a su ID (matrícula, CURP, o clave interna).
+* Estos códigos se generan automáticamente desde el sistema administrativo y pueden visualizarse o descargarse en PDF.
+
+### 2. **Escaneo desde celular**
+
+* El usuario accede al sitio web desde su celular.
+* Presiona el botón de **"Escanear QR"**, el cual activa la cámara del celular mediante JavaScript (usando `getUserMedia`).
+* El sistema reconoce el QR del alumno desde otro celular (por ejemplo, un maestro mostrando el código o un cartel).
+* Al escanear, se registra la hora de entrada o salida dependiendo del estado anterior.
+
+### 3. **Interfaz administrativa**
+
+* Acceso con credenciales.
+* Consulta de reportes, asistencia por fecha, por usuario, por clase o por carrera.
+* Exportación a Excel/PDF.
+* Panel para crear usuarios y generar QR individuales.
+
+### 4. **Base de datos**
+
+* Almacena usuarios, registros de entrada y salida, historial, claves, tipos de usuario y más.
+* Puede implementarse con **MongoDB** (NoSQL, más rápido para escaneos masivos) o **MySQL**.
+
+---
+
+## 💡 TECNOLOGÍAS UTILIZADAS
+
+| Parte          | Tecnología                                |
+| -------------- | ----------------------------------------- |
+| Frontend       | HTML5, CSS3, JavaScript (Vanilla)         |
+| Framework UI   | Tailwind CSS o Bootstrap                  |
+| Escaneo QR     | JavaScript (`html5-qrcode` o `instascan`) |
+| Backend (API)  | Node.js + Express.js                      |
+| Base de datos  | MongoDB o MySQL                           |
+| Autenticación  | JWT o sesiones con cookies                |
+| Generación QR  | `qrcode` o `qrcode-generator` lib         |
+| Exportar datos | `jsPDF`, `xlsx` o `pdfkit`                |
+
+---
+
+## 📁 ESTRUCTURA DE CARPETAS Y ARCHIVOS (estructura oficial, ya está hecha toda la estructura de carpetas con archivos y organizada, pero solo algunos archivos ya tienen contenido)
+checku/
+│
+├── 📁 public/                          # Frontend - Archivos públicos accesibles desde el navegador
+│   ├── 📄 index.html                   # ✅ CREADO - Página principal de escaneo QR
+│   ├── 📄 login.html                   # 🔄 PENDIENTE - Página de login para administradores
+│   ├── 📄 dashboard.html               # 🔄 PENDIENTE - Panel administrativo principal
+│   ├── 📄 qr-display.html              # 🔄 PENDIENTE - Página para mostrar QR individual del alumno
+│   ├── 📄 reports.html                 # 🔄 PENDIENTE - Página de reportes y estadísticas
+│   ├── 📄 users.html                   # 🔄 PENDIENTE - Gestión de usuarios (admin)
+│   │
+│   ├── 📁 css/
+│   │   ├── 📄 styles.css               # ✅ CREADO - Estilos globales del sistema
+│   │   ├── 📄 dashboard.css            # 🔄 PENDIENTE - Estilos específicos del dashboard
+│   │   └── 📄 login.css                # 🔄 PENDIENTE - Estilos del login
+│   │
+│   ├── 📁 js/
+│   │   ├── 📄 scan.js                  # ✅ CREADO - Lógica de escaneo QR
+│   │   ├── 📄 auth.js                  # 🔄 PENDIENTE - Manejo de autenticación
+│   │   ├── 📄 dashboard.js             # 🔄 PENDIENTE - Lógica del panel administrativo
+│   │   ├── 📄 qr-generator.js          # 🔄 PENDIENTE - Generación de códigos QR
+│   │   ├── 📄 reports.js               # 🔄 PENDIENTE - Generación de reportes
+│   │   ├── 📄 users.js                 # 🔄 PENDIENTE - Gestión de usuarios
+│   │   └── 📄 utils.js                 # 🔄 PENDIENTE - Funciones utilitarias generales
+│   │
+│   └── 📁 assets/
+│       ├── 🖼️ logo.png                 # ✅ TIENES - Logotipo de Check-U
+│       ├── 🖼️ fondo.jpg                # ✅ TIENES - Imagen de fondo con destellos
+│       ├── 🖼️ icono_qr.png             # ✅ TIENES - Icono vectorial para QR
+│       ├── 🖼️ user-avatar.png          # ✅ TIENES - Avatar por defecto de usuarios
+│       └── 📁 qr-codes/                # 🔄 PENDIENTE - Carpeta para QR generados (temporal)
+│
+├── 📁 server/                          # Backend - Lógica del servidor
+│   ├── 📄 app.js                       # 🔄 PENDIENTE - Archivo principal del servidor Express
+│   ├── 📄 server.js                    # 🔄 PENDIENTE - Punto de entrada del servidor
+│   │
+│   ├── 📁 routes/                      # Rutas de la API
+│   │   ├── 📄 authRoutes.js            # 🔄 PENDIENTE - Rutas de autenticación (login/logout)
+│   │   ├── 📄 userRoutes.js            # 🔄 PENDIENTE - Rutas para gestión de usuarios
+│   │   ├── 📄 attendanceRoutes.js      # 🔄 PENDIENTE - Rutas para registro de asistencia
+│   │   ├── 📄 adminRoutes.js           # 🔄 PENDIENTE - Rutas administrativas
+│   │   └── 📄 reportRoutes.js          # 🔄 PENDIENTE - Rutas para reportes
+│   │
+│   ├── 📁 controllers/                 # Lógica de negocio
+│   │   ├── 📄 authController.js        # 🔄 PENDIENTE - Control de autenticación
+│   │   ├── 📄 userController.js        # 🔄 PENDIENTE - Control de usuarios
+│   │   ├── 📄 attendanceController.js  # 🔄 PENDIENTE - Control de asistencias
+│   │   └── 📄 reportController.js      # 🔄 PENDIENTE - Control de reportes
+│   │
+│   ├── 📁 models/                      # Modelos de base de datos
+│   │   ├── 📄 User.js                  # 🔄 PENDIENTE - Modelo de usuario
+│   │   ├── 📄 Attendance.js            # 🔄 PENDIENTE - Modelo de asistencia
+│   │   └── 📄 Admin.js                 # 🔄 PENDIENTE - Modelo de administrador
+│   │
+│   ├── 📁 middleware/                  # Middlewares personalizados
+│   │   ├── 📄 auth.js                  # 🔄 PENDIENTE - Middleware de autenticación
+│   │   ├── 📄 validation.js            # 🔄 PENDIENTE - Validación de datos
+│   │   └── 📄 errorHandler.js          # 🔄 PENDIENTE - Manejo de errores
+│   │
+│   ├── 📁 utils/                       # Utilidades del servidor
+│   │   ├── 📄 qrGenerator.js           # 🔄 PENDIENTE - Generador de códigos QR
+│   │   ├── 📄 emailSender.js           # 🔄 PENDIENTE - Envío de emails (opcional)
+│   │   └── 📄 dateUtils.js             # 🔄 PENDIENTE - Utilidades de fechas
+│   │
+│   └── 📁 db/                          # Base de datos
+│       ├── 📄 connection.js            # 🔄 PENDIENTE - Conexión a MongoDB/MySQL
+│       ├── 📄 init.js                  # 🔄 PENDIENTE - Inicialización de DB
+│       └── 📄 seedData.js              # 🔄 PENDIENTE - Datos iniciales (usuarios demo)
+│
+├── 📁 config/                          # Configuración del proyecto
+│   ├── 📄 config.js                    # 🔄 PENDIENTE - Variables de configuración
+│   ├── 📄 database.js                  # 🔄 PENDIENTE - Configuración de base de datos
+│   └── 📄 jwt.js                       # 🔄 PENDIENTE - Configuración de JWT
+│
+├── 📁 uploads/                         # Archivos subidos (opcional)
+│   └── 📁 temp/                        # Archivos temporales
+│
+├── 📁 logs/                            # Logs del sistema (opcional)
+│   ├── 📄 app.log                      # Log de aplicación
+│   └── 📄 error.log                    # Log de errores
+│
+├── 📁 docs/                            # Documentación del proyecto
+│   ├── 📄 API.md                       # 🔄 PENDIENTE - Documentación de la API
+│   ├── 📄 INSTALL.md                   # 🔄 PENDIENTE - Guía de instalación
+│   └── 📄 USER_MANUAL.md               # 🔄 PENDIENTE - Manual de usuario
+│
+├── 📁 tests/                           # Pruebas (opcional pero recomendado)
+│   ├── 📄 auth.test.js                 # 🔄 PENDIENTE - Pruebas de autenticación
+│   └── 📄 attendance.test.js           # 🔄 PENDIENTE - Pruebas de asistencia
+│
+├── 📄 package.json                     # 🔄 PENDIENTE - Dependencias de Node.js
+├── 📄 package-lock.json                # 🔄 PENDIENTE - Versiones exactas de dependencias
+├── 📄 .env                             # 🔄 PENDIENTE - Variables de entorno (secretas)
+├── 📄 .env.example                     # 🔄 PENDIENTE - Ejemplo de variables de entorno
+├── 📄 .gitignore                       # 🔄 PENDIENTE - Archivos a ignorar en Git
+├── 📄 README.md                        # 🔄 PENDIENTE - Documentación principal del proyecto
+└── 📄 start.bat                        # 🔄 PENDIENTE - Script de inicio para Windows (opcional)
+
+---
+
+## 🔒 TIPOS DE USUARIOS
+
+| Tipo    | Permisos principales                   |
+| ------- | -------------------------------------- |
+| Alumno  | Escanea QR, visualiza su historial     |
+| Admin   | Accede a panel, genera QR, ve reportes |
+| Docente | (Opcional) Valida asistencia en vivo   |
+
+---
+
+## 🧪 FUNCIONES ADICIONALES (EN DESARROLLO O EXTENSIBLES)
+
+* Modo **offline** con sincronización posterior.
+* **Reconocimiento facial** para asistencia adicional (futuro).
+* **Dashboard gráfico** con gráficos de barras, pastel y tiempo.
+* **Notificaciones por correo** si el alumno no ha asistido.
+* Reportes de **alumnos con asistencia perfecta** o irregularidades.
+
+---
+
+## ✍️ NOTAS ADICIONALES
+
+* El sistema puede adaptarse para escanear QR desde la **cámara de una laptop** también.
+* En el futuro puede integrarse con **Google Classroom o Moodle** vía API.
+* Todo el frontend debe ser **responsive** y orientado a uso móvil.
+
+---
+ ARCHIVOS CREADOS (códigos)
+------------------------------
+------------------------------
+index.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-U - Asistencia QR</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen">
+    <!-- Fondo con efectos -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="stars"></div>
+        <div class="moving-stars"></div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="p-6 text-center">
+            <div class="flex justify-center items-center mb-4">
+                <img src="assets/logo.png" alt="Check-U Logo" class="h-16 w-auto mr-3">
+                <h1 class="text-4xl font-bold text-white glow-text">Check-U</h1>
+            </div>
+            <p class="text-blue-200 text-lg">Sistema de Asistencia Inteligente</p>
+        </header>
+
+        <!-- Área principal -->
+        <main class="flex-1 flex flex-col items-center justify-center px-6">
+            <!-- Card principal -->
+            <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 max-w-md w-full shadow-2xl border border-white border-opacity-20">
+                <div class="text-center mb-8">
+                    <div class="bg-blue-500 bg-opacity-20 rounded-full p-4 inline-block mb-4">
+                        <img src="assets/icono_qr.png" alt="QR Icon" class="h-12 w-12">
+                    </div>
+                    <h2 class="text-2xl font-semibold text-white mb-2">Escanear Código QR</h2>
+                    <p class="text-blue-200">Registra tu entrada o salida escaneando tu código QR</p>
+                </div>
+
+                <!-- Botón principal -->
+                <button id="startScanBtn" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 mb-4">
+                    <div class="flex items-center justify-center">
+                        <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4.01M5 12H4m0 0H2m3 0V9l3-3 3 3v3m-3 3h-.01M8 16H4.01"></path>
+                        </svg>
+                        Activar Cámara
+                    </div>
+                </button>
+
+                <!-- Área de video para la cámara -->
+                <div id="cameraContainer" class="hidden">
+                    <video id="preview" class="w-full rounded-lg mb-4"></video>
+                    <button id="stopScanBtn" class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg transition">
+                        Detener Escaneo
+                    </button>
+                </div>
+
+                <!-- Resultado del escaneo -->
+                <div id="result" class="hidden mt-4 p-4 rounded-lg text-center">
+                    <div id="resultMessage" class="font-semibold"></div>
+                    <div id="resultDetails" class="text-sm mt-2"></div>
+                </div>
+            </div>
+
+            <!-- Opciones adicionales -->
+            <div class="mt-8 flex space-x-4">
+                <a href="qr-display.html" class="bg-white bg-opacity-10 backdrop-blur-lg text-white px-6 py-3 rounded-lg hover:bg-opacity-20 transition">
+                    Ver mi QR
+                </a>
+                <a href="login.html" class="bg-white bg-opacity-10 backdrop-blur-lg text-white px-6 py-3 rounded-lg hover:bg-opacity-20 transition">
+                    Administrador
+                </a>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="p-6 text-center text-blue-200">
+            <p>&copy; 2024 Check-U - UTSH</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script src="js/scan.js"></script>
+</body>
+</html>
+----------------------------------------------------------------
+----------------------------------------------------------------
+styles.css
+/* Estilos generales para Check-U */
+
+/* Efecto de brillo para el texto del título */
+.glow-text {
+    text-shadow: 0 0 10px rgba(59, 130, 246, 0.8),
+                 0 0 20px rgba(59, 130, 246, 0.6),
+                 0 0 30px rgba(59, 130, 246, 0.4);
+}
+
+/* Animación de estrellas en el fondo */
+.stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+}
+
+.stars::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+    background-repeat: repeat;
+    background-size: 200px 100px;
+    animation: twinkle 8s linear infinite;
+}
+
+.moving-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(1px 1px at 50px 50px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(1px 1px at 100px 100px, rgba(255,255,255,0.3), transparent),
+        radial-gradient(1px 1px at 150px 150px, rgba(255,255,255,0.4), transparent);
+    background-size: 300px 300px;
+    animation: moveStars 20s linear infinite;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+@keyframes moveStars {
+    0% { transform: translateX(0) translateY(0); }
+    100% { transform: translateX(-300px) translateY(-300px); }
+}
+
+/* Efectos para botones */
+.btn-glow {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+    transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.8);
+    transform: translateY(-2px);
+}
+
+/* Animación de carga */
+.loading-spinner {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 4px solid #ffffff;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Efectos para las cards */
+.glass-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Efectos de hover para elementos interactivos */
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el video de la cámara */
+#preview {
+    border: 3px solid rgba(59, 130, 246, 0.5);
+    border-radius: 12px;
+}
+
+/* Mensajes de resultado */
+.result-success {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.2), rgba(34, 197, 94, 0.1));
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    color: #22c55e;
+}
+
+.result-error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(239, 68, 68, 0.1));
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    color: #ef4444;
+}
+
+.result-info {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0.1));
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #3b82f6;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+    .glow-text {
+        font-size: 2rem;
+    }
+    
+    .glass-card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+
+/* Animaciones de entrada */
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+/* Estilos para tablas en el dashboard */
+.table-container {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table-header {
+    background: rgba(59, 130, 246, 0.2);
+    color: white;
+}
+
+.table-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Efectos para inputs */
+.input-glow {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.input-glow:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.input-glow::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+-----------------------------------------------------
+-----------------------------------------------------
+scan.js
+// scan.js - Manejo del escaneo de códigos QR
+// Este archivo contiene toda la lógica para activar la cámara y escanear códigos QR
+
+class QRScanner {
+    constructor() {
+        this.html5QrCode = null;
+        this.isScanning = false;
+        this.initializeElements();
+        this.attachEventListeners();
+    }
+
+    // Inicializar referencias a elementos del DOM
+    initializeElements() {
+        this.startBtn = document.getElementById('startScanBtn');
+        this.stopBtn = document.getElementById('stopScanBtn');
+        this.cameraContainer = document.getElementById('cameraContainer');
+        this.resultDiv = document.getElementById('result');
+        this.resultMessage = document.getElementById('resultMessage');
+        this.resultDetails = document.getElementById('resultDetails');
+        this.preview = document.getElementById('preview');
+    }
+
+    // Agregar event listeners a los botones
+    attachEventListeners() {
+        this.startBtn.addEventListener('click', () => this.startScanning());
+        this.stopBtn.addEventListener('click', () => this.stopScanning());
+    }
+
+    // Iniciar el escaneo de QR
+    async startScanning() {
+        try {
+            // Verificar si el navegador soporta getUserMedia
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                this.showResult('error', 'Tu navegador no soporta el acceso a la cámara', 
+                    'Intenta con Chrome, Firefox o Safari actualizados');
+                return;
+            }
+
+            // Mostrar mensaje de carga
+            this.startBtn.innerHTML = `
+                <div class="loading-spinner"></div>
+                <span class="ml-2">Iniciando cámara...</span>
+            `;
+            this.startBtn.disabled = true;
+
+            // Configurar el escáner
+            this.html5QrCode = new Html5Qrcode("preview");
+            
+            // Configuración de la cámara
+            const config = {
+                fps: 10,
+                qrbox: { width: 250, height: 250 },
+                aspectRatio: 1.0
+            };
+
+            // Iniciar el escáner
+            await this.html5QrCode.start(
+                { facingMode: "environment" }, // Usar cámara trasera si está disponible
+                config,
+                (decodedText, decodedResult) => {
+                    this.onScanSuccess(decodedText, decodedResult);
+                },
+                (errorMessage) => {
+                    // Errores de escaneo (normales, no mostrar)
+                    console.log(`Error de escaneo: ${errorMessage}`);
+                }
+            );
+
+            // Actualizar UI
+            this.isScanning = true;
+            this.startBtn.classList.add('hidden');
+            this.cameraContainer.classList.remove('hidden');
+            this.hideResult();
+
+        } catch (error) {
+            console.error('Error al iniciar el escaneo:', error);
+            this.showResult('error', 'Error al acceder a la cámara', 
+                'Verifica que hayas dado permisos de cámara al navegador');
+            this.resetStartButton();
+        }
+    }
+
+    // Detener el escaneo
+    async stopScanning() {
+        try {
+            if (this.html5QrCode && this.isScanning) {
+                await this.html5QrCode.stop();
+                this.html5QrCode.clear();
+            }
+        } catch (error) {
+            console.error('Error al detener el escaneo:', error);
+        }
+
+        // Actualizar UI
+        this.isScanning = false;
+        this.cameraContainer.classList.add('hidden');
+        this.startBtn.classList.remove('hidden');
+        this.resetStartButton();
+        this.hideResult();
+    }
+
+    // Función que se ejecuta cuando se encuentra un QR
+    async onScanSuccess(decodedText, decodedResult) {
+        console.log(`Código QR detectado: ${decodedText}`);
+        
+        // Detener el escaneo inmediatamente
+        await this.stopScanning();
+        
+        // Mostrar mensaje de procesamiento
+        this.showResult('info', 'Procesando...', 'Registrando tu asistencia');
+        
+        // Procesar el código QR escaneado
+        await this.processQRCode(decodedText);
+    }
+
+    // Procesar el código QR y registrar la asistencia
+    async processQRCode(qrData) {
+        try {
+            // Aquí haremos la llamada al servidor para registrar la asistencia
+            const response = await fetch('/api/attendance/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    qrCode: qrData,
+                    timestamp: new Date().toISOString()
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Éxito al registrar
+                const actionText = result.action === 'entrada' ? 'Entrada registrada' : 'Salida registrada';
+                const timeText = new Date().toLocaleTimeString('es-MX');
+                
+                this.showResult('success', actionText, 
+                    `${result.userName} - ${timeText}`);
+                
+                // Reproducir sonido de éxito (opcional)
+                this.playSuccessSound();
+            } else {
+                // Error del servidor
+                this.showResult('error', result.message || 'Error al registrar', 
+                    'Intenta escanear nuevamente');
+            }
+
+        } catch (error) {
+            console.error('Error al procesar QR:', error);
+            
+            // Simular procesamiento para modo demo (cuando no hay servidor)
+            if (this.isDemoMode()) {
+                this.simulateDemoResponse(qrData);
+            } else {
+                this.showResult('error', 'Error de conexión', 
+                    'Verifica tu conexión a internet');
+            }
+        }
+    }
+
+    // Modo demo para cuando no hay servidor disponible
+    isDemoMode() {
+        return window.location.hostname === 'localhost' || 
+               window.location.hostname === '127.0.0.1' ||
+               !navigator.onLine;
+    }
+
+    // Simular respuesta en modo demo
+    simulateDemoResponse(qrData) {
+        setTimeout(() => {
+            // Simular datos de usuario basados en el QR
+            const mockUser = this.generateMockUser(qrData);
+            const action = Math.random() > 0.5 ? 'entrada' : 'salida';
+            const timeText = new Date().toLocaleTimeString('es-MX');
+            
+            this.showResult('success', 
+                `${action.charAt(0).toUpperCase() + action.slice(1)} registrada (DEMO)`, 
+                `${mockUser.name} - ${timeText}`);
+        }, 1500);
+    }
+
+    // Generar usuario simulado para demo
+    generateMockUser(qrData) {
+        const names = ['Juan Pérez', 'María García', 'Carlos López', 'Ana Martínez'];
+        const careers = ['Ingeniería en Redes', 'Desarrollo de Software', 'Ciberseguridad'];
+        
+        return {
+            name: names[Math.floor(Math.random() * names.length)],
+            id: qrData.substring(0, 8) || 'DEMO001',
+            career: careers[Math.floor(Math.random() * careers.length)]
+        };
+    }
+
+    // Mostrar resultado del escaneo
+    showResult(type, message, details = '') {
+        this.resultDiv.className = `mt-4 p-4 rounded-lg text-center result-${type}`;
+        this.resultMessage.textContent = message;
+        this.resultDetails.textContent = details;
+        this.resultDiv.classList.remove('hidden');
+        
+        // Ocultar el resultado después de 5 segundos
+        setTimeout(() => {
+            this.hideResult();
+        }, 5000);
+    }
+
+    // Ocultar resultado
+    hideResult() {
+        this.resultDiv.classList.add('hidden');
+    }
+
+    // Resetear botón de inicio
+    resetStartButton() {
+        this.startBtn.innerHTML = `
+            <div class="flex items-center justify-center">
+                <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 16h4.01M5 12H4m0 0H2m3 0V9l3-3 3 3v3m-3 3h-.01M8 16H4.01"></path>
+                </svg>
+                Activar Cámara
+            </div>
+        `;
+        this.startBtn.disabled = false;
+    }
+
+    // Reproducir sonido de éxito (opcional)
+    playSuccessSound() {
+        try {
+            // Crear un beep corto usando Web Audio API
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.2);
+        } catch (error) {
+            console.log('No se pudo reproducir sonido:', error);
+        }
+    }
+}
+
+// Inicializar el escáner cuando se carga la página
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Inicializando Check-U Scanner...');
+    
+    // Verificar si estamos en la página correcta
+    if (document.getElementById('startScanBtn')) {
+        new QRScanner();
+        console.log('Scanner inicializado correctamente');
+    }
+
+    // Agregar efectos de animación
+    const cards = document.querySelectorAll('.glass-card');
+    cards.forEach((card, index) => {
+        setTimeout(() => {
+            card.classList.add('fade-in');
+        }, index * 200);
+    });
+});
+
+// Manejar errores globales
+window.addEventListener('error', (event) => {
+    console.error('Error global:', event.error);
+});
+
+// Función de utilidad para formatear fechas
+function formatDateTime(date) {
+    return new Intl.DateTimeFormat('es-MX', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    }).format(date);
+}
+---------------------------------------------------
+---------------------------------------------------
+login.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-U - Acceso Administrativo</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body class="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen">
+    <!-- Fondo con efectos -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div class="stars"></div>
+        <div class="moving-stars"></div>
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <img src="assets/logo.png" alt="Check-U Logo" class="h-12 w-auto mr-3">
+                    <h1 class="text-2xl font-bold text-white glow-text">Check-U</h1>
+                </div>
+                <a href="index.html" class="text-blue-200 hover:text-white transition">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </a>
+            </div>
+        </header>
+
+        <!-- Área de login -->
+        <main class="flex-1 flex items-center justify-center px-6 py-12">
+            <div class="bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl p-8 max-w-md w-full shadow-2xl border border-white border-opacity-20 glass-card">
+                <!-- Título -->
+                <div class="text-center mb-8">
+                    <div class="bg-blue-500 bg-opacity-20 rounded-full p-4 inline-block mb-4">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-white mb-2">Acceso Administrativo</h2>
+                    <p class="text-blue-200">Ingresa tus credenciales para continuar</p>
+                </div>
+
+                <!-- Formulario de login -->
+                <form id="loginForm" class="space-y-6">
+                    <!-- Campo Usuario -->
+                    <div class="space-y-2">
+                        <label for="username" class="block text-sm font-medium text-blue-200">
+                            Usuario o Email
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                required
+                                class="input-glow w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="admin@utsh.edu.mx"
+                                autocomplete="username"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Campo Contraseña -->
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm font-medium text-blue-200">
+                            Contraseña
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                </svg>
+                            </div>
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required
+                                class="input-glow w-full pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                placeholder="••••••••"
+                                autocomplete="current-password"
+                            >
+                            <button 
+                                type="button" 
+                                id="togglePassword"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center"
+                            >
+                                <svg id="eyeIcon" class="h-5 w-5 text-blue-300 hover:text-white transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recordar sesión -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input 
+                                id="remember" 
+                                name="remember" 
+                                type="checkbox" 
+                                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded bg-white bg-opacity-10"
+                            >
+                            <label for="remember" class="ml-2 block text-sm text-blue-200">
+                                Recordar sesión
+                            </label>
+                        </div>
+                        <div class="text-sm">
+                            <a href="#" class="text-blue-300 hover:text-white transition" id="forgotPassword">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mensaje de error -->
+                    <div id="errorMessage" class="hidden p-3 rounded-lg bg-red-500 bg-opacity-20 border border-red-500 border-opacity-30 text-red-200 text-sm text-center">
+                        <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span id="errorText">Error en las credenciales</span>
+                    </div>
+
+                    <!-- Botón de login -->
+                    <button 
+                        type="submit" 
+                        id="loginBtn"
+                        class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition hover:scale-105 active:scale-95 btn-glow"
+                    >
+                        <span id="loginBtnText">Iniciar Sesión</span>
+                        <div id="loginBtnSpinner" class="hidden loading-spinner"></div>
+                    </button>
+                </form>
+
+                <!-- Información adicional -->
+                <div class="mt-8 text-center">
+                    <p class="text-blue-200 text-sm">
+                        ¿No tienes acceso administrativo?
+                    </p>
+                    <a href="index.html" class="text-blue-300 hover:text-white transition text-sm font-medium">
+                        Ir al escaneo de QR →
+                    </a>
+                </div>
+
+                <!-- Datos de prueba (solo para desarrollo) -->
+                <div class="mt-6 p-4 bg-yellow-500 bg-opacity-10 border border-yellow-500 border-opacity-30 rounded-lg">
+                    <p class="text-yellow-200 text-xs font-semibold mb-2">🔧 DATOS DE PRUEBA:</p>
+                    <p class="text-yellow-200 text-xs">Usuario: <code>admin</code></p>
+                    <p class="text-yellow-200 text-xs">Contraseña: <code>admin123</code></p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="p-6 text-center text-blue-200">
+            <p class="text-sm">&copy; 2024 Check-U - Universidad Tecnológica de la Sierra Hidalguense</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/utils.js"></script>
+</body>
+</html>
+--------------------------------------
+--------------------------------------
+login.css
+/* login.css - Estilos específicos para la página de login */
+
+/* Animaciones de entrada para el formulario */
+.glass-card {
+    animation: slideInUp 0.8s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Efectos para los campos de input */
+.input-glow {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.input-glow:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 
+        0 0 0 3px rgba(59, 130, 246, 0.1),
+        0 0 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(-2px);
+}
+
+.input-glow:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Efectos para el botón de mostrar/ocultar contraseña */
+#togglePassword {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#togglePassword:hover svg {
+    transform: scale(1.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Animación del botón de login */
+#loginBtn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+#loginBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transition: left 0.5s ease;
+}
+
+#loginBtn:hover::before {
+    left: 100%;
+}
+
+#loginBtn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Animación del spinner de carga */
+#loginBtnSpinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid #ffffff;
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 1s linear infinite;
+}
+
+/* Efectos para los mensajes de error */
+#errorMessage {
+    animation: shakeError 0.5s ease-in-out;
+}
+
+@keyframes shakeError {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Efectos para los checkboxes */
+input[type="checkbox"] {
+    transition: all 0.3s ease;
+}
+
+input[type="checkbox"]:checked {
+    background-color: rgba(59, 130, 246, 0.8);
+    border-color: rgba(59, 130, 246, 0.8);
+}
+
+/* Efectos para los enlaces */
+a {
+    position: relative;
+    text-decoration: none;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -2px;
+    left: 50%;
+    background-color: currentColor;
+    transition: all 0.3s ease;
+}
+
+a:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+/* Estilos para la información de desarrollo */
+.dev-info {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.dev-info code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85em;
+}
+
+/* Efectos de hover para el card principal */
+.glass-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(59, 130, 246, 0.1);
+}
+
+/* Animaciones de los iconos */
+.glass-card svg {
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover svg {
+    transform: scale(1.05);
+}
+
+/* Efectos de foco para accesibilidad */
+button:focus,
+input:focus,
+a:focus {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
+}
+
+/* Responsive design específico para login */
+@media (max-width: 640px) {
+    .glass-card {
+        margin: 1rem;
+        padding: 2rem 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.8rem;
+    }
+    
+    .input-glow {
+        padding: 0.8rem 0.8rem 0.8rem 2.5rem;
+    }
+    
+    #loginBtn {
+        padding: 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Animación para cuando se carga la página */
+body {
+    animation: fadeInBody 1s ease-out;
+}
+
+@keyframes fadeInBody {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Efectos especiales para el hover del header */
+header .flex:hover img {
+    transform: rotate(5deg) scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+header .flex:hover h1 {
+    text-shadow: 
+        0 0 15px rgba(59, 130, 246, 0.8),
+        0 0 25px rgba(59, 130, 246, 0.6),
+        0 0 35px rgba(59, 130, 246, 0.4);
+}
+
+/* Estados de validación para inputs */
+.input-valid {
+    border-color: rgba(34, 197, 94, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1) !important;
+}
+
+.input-invalid {
+    border-color: rgba(239, 68, 68, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Efecto de "typing" para el placeholder (opcional) */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+/* Animación sutil para los labels */
+label {
+    transition: all 0.3s ease;
+}
+
+.input-glow:focus + label,
+.input-glow:not(:placeholder-shown) + label {
+    color: rgba(59, 130, 246, 0.8);
+    transform: translateY(-2px);
+}
+-----------------------------------
+-----------------------------------
+auth.js
+// auth.js - Manejo de autenticación y sesiones
+// Este archivo maneja el login, logout y verificación de sesiones
+
+class AuthManager {
+    constructor() {
+        this.isLoggedIn = false;
+        this.currentUser = null;
+        this.loginAttempts = 0;
+        this.maxAttempts = 3;
+        this.lockoutTime = 5 * 60 * 1000; // 5 minutos en milisegundos
+        
+        this.initializeAuth();
+        this.setupEventListeners();
+    }
+
+    // Inicializar el sistema de autenticación
+    initializeAuth() {
+        // Verificar si hay una sesión activa guardada
+        this.checkExistingSession();
+        
+        // Verificar si estamos en la página de login
+        if (this.isLoginPage()) {
+            this.setupLoginForm();
+        }
+        
+        // Verificar si estamos en una página que requiere autenticación
+        if (this.requiresAuth() && !this.isLoggedIn) {
+            this.redirectToLogin();
+        }
+    }
+
+    // Configurar event listeners
+    setupEventListeners() {
+        // Listener para logout (si existe el botón)
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => this.logout());
+        }
+
+        // Listener para verificar sesión periódicamente
+        setInterval(() => this.verifySession(), 5 * 60 * 1000); // Cada 5 minutos
+    }
+
+    // Verificar si hay una sesión existente
+    checkExistingSession() {
+        try {
+            const sessionData = this.getSessionData();
+            if (sessionData && sessionData.token && sessionData.expiry > Date.now()) {
+                this.isLoggedIn = true;
+                this.currentUser = sessionData.user;
+                console.log('Sesión activa encontrada:', this.currentUser.username);
+            } else {
+                this.clearSession();
+            }
+        } catch (error) {
+            console.error('Error al verificar sesión:', error);
+            this.clearSession();
+        }
+    }
+
+    // Configurar el formulario de login
+    setupLoginForm() {
+        const loginForm = document.getElementById('loginForm');
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        // Manejar envío del formulario
+        if (loginForm) {
+            loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+        }
+
+        // Manejar toggle de contraseña
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', () => {
+                this.togglePasswordVisibility(passwordInput);
+            });
+        }
+
+        // Validación en tiempo real
+        this.setupRealTimeValidation();
+
+        // Verificar si el usuario está bloqueado
+        this.checkLockout();
+    }
+
+    // Manejar el proceso de login
+    async handleLogin(event) {
+        event.preventDefault();
+        
+        // Verificar si el usuario está bloqueado
+        if (this.isLockedOut()) {
+            this.showError('Demasiados intentos fallidos. Espera antes de intentar nuevamente.');
+            return;
+        }
+
+        const formData = new FormData(event.target);
+        const credentials = {
+            username: formData.get('username').trim(),
+            password: formData.get('password'),
+            remember: formData.get('remember') === 'on'
+        };
+
+        // Validar campos
+        if (!this.validateCredentials(credentials)) {
+            return;
+        }
+
+        // Mostrar estado de carga
+        this.setLoadingState(true);
+
+        try {
+            // Intentar autenticación
+            const result = await this.authenticate(credentials);
+            
+            if (result.success) {
+                this.handleLoginSuccess(result, credentials.remember);
+            } else {
+                this.handleLoginFailure(result.message);
+            }
+        } catch (error) {
+            console.error('Error en login:', error);
+            this.handleLoginFailure('Error de conexión. Intenta nuevamente.');
+        } finally {
+            this.setLoadingState(false);
+        }
+    }
+
+    // Autenticar con el servidor
+    async authenticate(credentials) {
+        try {
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(credentials)
+            });
+
+            const data = await response.json();
+            return data;
+
+        } catch (error) {
+            console.error('Error de red:', error);
+            
+            // Modo demo/offline - usar credenciales hardcodeadas
+            return this.authenticateDemo(credentials);
+        }
+    }
+
+    // Autenticación en modo demo (para desarrollo)
+    authenticateDemo(credentials) {
+        const demoUsers = [
+            { username: 'admin', password: 'admin123', role: 'admin', name: 'Administrador Principal' },
+            { username: 'profesor', password: 'prof123', role: 'teacher', name: 'Profesor Demo' },
+            { username: 'admin@utsh.edu.mx', password: 'admin123', role: 'admin', name: 'Admin UTSH' }
+        ];
+
+        const user = demoUsers.find(u => 
+            u.username === credentials.username && u.password === credentials.password
+        );
+
+        if (user) {
+            return {
+                success: true,
+                token: 'demo_token_' + Date.now(),
+                user: {
+                    id: Date.now(),
+                    username: user.username,
+                    name: user.name,
+                    role: user.role,
+                    email: user.username.includes('@') ? user.username : `${user.username}@utsh.edu.mx`
+                },
+                message: 'Login exitoso (Modo Demo)'
+            };
+        } else {
+            return {
+                success: false,
+                message: 'Credenciales incorrectas'
+            };
+        }
+    }
+
+    // Manejar login exitoso
+    handleLoginSuccess(result, remember) {
+        this.loginAttempts = 0;
+        this.isLoggedIn = true;
+        this.currentUser = result.user;
+
+        // Guardar sesión
+        this.saveSession(result.token, result.user, remember);
+
+        // Mostrar mensaje de éxito
+        this.showSuccess(`¡Bienvenido, ${result.user.name}!`);
+
+        // Redirigir al dashboard después de un breve delay
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 1500);
+    }
+
+    // Manejar login fallido
+    handleLoginFailure(message) {
+        this.loginAttempts++;
+        
+        if (this.loginAttempts >= this.maxAttempts) {
+            this.setLockout();
+            this.showError(`Demasiados intentos fallidos. Bloqueado por ${this.lockoutTime / 60000} minutos.`);
+        } else {
+            const remainingAttempts = this.maxAttempts - this.loginAttempts;
+            this.showError(`${message}. Te quedan ${remainingAttempts} intentos.`);
+        }
+
+        // Limpiar contraseña
+        const passwordInput = document.getElementById('password');
+        if (passwordInput) {
+            passwordInput.value = '';
+        }
+    }
+
+    // Validar credenciales
+    validateCredentials(credentials) {
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        let isValid = true;
+
+        // Validar username
+        if (!credentials.username || credentials.username.length < 3) {
+            this.markInputAsInvalid(usernameInput);
+            isValid = false;
+        } else {
+            this.markInputAsValid(usernameInput);
+        }
+
+        // Validar password
+        if (!credentials.password || credentials.password.length < 6) {
+            this.markInputAsInvalid(passwordInput);
+            isValid = false;
+        } else {
+            this.markInputAsValid(passwordInput);
+        }
+
+        if (!isValid) {
+            this.showError('Por favor, completa todos los campos correctamente.');
+        }
+
+        return isValid;
+    }
+
+    // Configurar validación en tiempo real
+    setupRealTimeValidation() {
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+
+        if (usernameInput) {
+            usernameInput.addEventListener('input', () => {
+                if (usernameInput.value.length >= 3) {
+                    this.markInputAsValid(usernameInput);
+                } else {
+                    this.clearInputValidation(usernameInput);
+                }
+            });
+        }
+
+        if (passwordInput) {
+            passwordInput.addEventListener('input', () => {
+                if (passwordInput.value.length >= 6) {
+                    this.markInputAsValid(passwordInput);
+                } else {
+                    this.clearInputValidation(passwordInput);
+                }
+            });
+        }
+    }
+
+    // Toggle visibilidad de contraseña
+    togglePasswordVisibility(passwordInput) {
+        const eyeIcon = document.getElementById('eyeIcon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L12 12m6.928-5.928l-6.878 6.878"></path>
+            `;
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.innerHTML = `
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            `;
+        }
+    }
+
+    // Guardar sesión
+    saveSession(token, user, remember) {
+        const sessionData = {
+            token: token,
+            user: user,
+            expiry: remember ? Date.now() + (30 * 24 * 60 * 60 * 1000) : Date.now() + (24 * 60 * 60 * 1000), // 30 días si remember, sino 1 día
+            remember: remember
+        };
+
+        // Usar sessionStorage o localStorage según la preferencia
+        const storage = remember ? localStorage : sessionStorage;
+        storage.setItem('checkU_session', JSON.stringify(sessionData));
+    }
+
+    // Obtener datos de sesión
+    getSessionData() {
+        const sessionData = localStorage.getItem('checkU_session') || sessionStorage.getItem('checkU_session');
+        return sessionData ? JSON.parse(sessionData) : null;
+    }
+
+    // Limpiar sesión
+    clearSession() {
+        localStorage.removeItem('checkU_session');
+        sessionStorage.removeItem('checkU_session');
+        this.isLoggedIn = false;
+        this.currentUser = null;
+    }
+
+    // Logout
+    async logout() {
+        try {
+            // Intentar logout en el servidor
+            await fetch('/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${this.getSessionData()?.token}`
+                }
+            });
+        } catch (error) {
+            console.log('Error en logout del servidor:', error);
+        }
+
+        // Limpiar sesión local
+        this.clearSession();
+        
+        // Redirigir al login
+        window.location.href = 'login.html';
+    }
+
+    // Verificar sesión periódicamente
+    async verifySession() {
+        if (!this.isLoggedIn) return;
+
+        try {
+            const response = await fetch('/api/auth/verify', {
+                headers: {
+                    'Authorization': `Bearer ${this.getSessionData()?.token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('Sesión inválida');
+            }
+        } catch (error) {
+            console.log('Sesión expirada:', error);
+            this.logout();
+        }
+    }
+
+    // Manejo de bloqueo por intentos fallidos
+    setLockout() {
+        const lockoutData = {
+            timestamp: Date.now(),
+            attempts: this.loginAttempts
+        };
+        localStorage.setItem('checkU_lockout', JSON.stringify(lockoutData));
+    }
+
+    checkLockout() {
+        const lockoutData = localStorage.getItem('checkU_lockout');
+        if (lockoutData) {
+            const data = JSON.parse(lockoutData);
+            const timePassed = Date.now() - data.timestamp;
+            
+            if (timePassed < this.lockoutTime) {
+                const remainingTime = Math.ceil((this.lockoutTime - timePassed) / 60000);
+                this.showError(`Cuenta bloqueada. Espera ${remainingTime} minutos.`);
+                this.setLoadingState(true, true); // Bloquear form
+                
+                // Desbloquear automáticamente cuando pase el tiempo
+                setTimeout(() => {
+                    localStorage.removeItem('checkU_lockout');
+                    this.setLoadingState(false);
+                    this.hideError();
+                }, this.lockoutTime - timePassed);
+            } else {
+                localStorage.removeItem('checkU_lockout');
+            }
+        }
+    }
+
+    isLockedOut() {
+        const lockoutData = localStorage.getItem('checkU_lockout');
+        if (lockoutData) {
+            const data = JSON.parse(lockoutData);
+            return (Date.now() - data.timestamp) < this.lockoutTime;
+        }
+        return false;
+    }
+
+    // Utilidades para UI
+    setLoadingState(loading, disabled = false) {
+        const loginBtn = document.getElementById('loginBtn');
+        const loginBtnText = document.getElementById('loginBtnText');
+        const loginBtnSpinner = document.getElementById('loginBtnSpinner');
+        const form = document.getElementById('loginForm');
+
+        if (loginBtn) {
+            loginBtn.disabled = loading || disabled;
+            
+            if (loading) {
+                loginBtnText.classList.add('hidden');
+                loginBtnSpinner.classList.remove('hidden');
+                loginBtn.classList.add('opacity-80');
+            } else {
+                loginBtnText.classList.remove('hidden');
+                loginBtnSpinner.classList.add('hidden');
+                loginBtn.classList.remove('opacity-80');
+            }
+        }
+
+        if (form) {
+            const inputs = form.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.disabled = loading || disabled;
+            });
+        }
+    }
+
+    showError(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        
+        if (errorDiv && errorText) {
+            errorText.textContent = message;
+            errorDiv.classList.remove('hidden');
+            errorDiv.classList.add('result-error');
+            
+            // Auto-hide después de 5 segundos
+            setTimeout(() => this.hideError(), 5000);
+        }
+    }
+
+    hideError() {
+        const errorDiv = document.getElementById('errorMessage');
+        if (errorDiv) {
+            errorDiv.classList.add('hidden');
+        }
+    }
+
+    showSuccess(message) {
+        const errorDiv = document.getElementById('errorMessage');
+        const errorText = document.getElementById('errorText');
+        
+        if (errorDiv && errorText) {
+            errorText.textContent = message;
+            errorDiv.classList.remove('hidden');
+            errorDiv.classList.remove('result-error');
+            errorDiv.classList.add('result-success');
+        }
+    }
+
+    markInputAsValid(input) {
+        input.classList.remove('input-invalid');
+        input.classList.add('input-valid');
+    }
+
+    markInputAsInvalid(input) {
+        input.classList.remove('input-valid');
+        input.classList.add('input-invalid');
+    }
+
+    clearInputValidation(input) {
+        input.classList.remove('input-valid', 'input-invalid');
+    }
+
+    // Utilidades de navegación
+    isLoginPage() {
+        return window.location.pathname.includes('login.html') || 
+               document.getElementById('loginForm') !== null;
+    }
+
+    requiresAuth() {
+        const protectedPages = ['dashboard.html', 'reports.html', 'users.html'];
+        return protectedPages.some(page => window.location.pathname.includes(page));
+    }
+
+    redirectToLogin() {
+        if (!this.isLoginPage()) {
+            window.location.href = 'login.html';
+        }
+    }
+
+    // Obtener información del usuario actual
+    getCurrentUser() {
+        return this.currentUser;
+    }
+
+    // Verificar si el usuario tiene un rol específico
+    hasRole(role) {
+        return this.currentUser && this.currentUser.role === role;
+    }
+
+    // Verificar si el usuario está autenticado
+    isAuthenticated() {
+        return this.isLoggedIn && this.currentUser !== null;
+    }
+}
+
+// Crear instancia global del manejador de autenticación
+let authManager;
+
+// Inicializar cuando se carga el DOM
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Inicializando sistema de autenticación...');
+    authManager = new AuthManager();
+    
+    // Hacer disponible globalmente para otras partes del sistema
+    window.authManager = authManager;
+});
+
+// Funciones globales de utilidad para otros módulos
+window.checkAuth = () => {
+    return authManager ? authManager.isAuthenticated() : false;
+};
+
+window.getCurrentUser = () => {
+    return authManager ? authManager.getCurrentUser() : null;
+};
+
+window.logout = () => {
+    if (authManager) {
+        authManager.logout();
+    }
+};
+
+// Manejar el evento de "olvidé mi contraseña"
+document.addEventListener('DOMContentLoaded', () => {
+    const forgotPasswordLink = document.getElementById('forgotPassword');
+    if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Por ahora mostrar un alert, después se puede implementar un modal
+            alert('Funcionalidad de recuperación de contraseña en desarrollo.\n\nContacta al administrador del sistema:\nadmin@utsh.edu.mx');
+        });
+    }
+});
+--------------------------------------
+--------------------------------------
+utils.js
+// utils.js - Funciones utilitarias para todo el sistema Check-U
+// Este archivo contiene funciones que se usan en múltiples partes del sistema
+
+// ========================================
+// UTILIDADES DE FECHA Y HORA
+// ========================================
+
+/**
+ * Formatear fecha y hora para mostrar en la interfaz
+ * @param {Date|string} date - Fecha a formatear
+ * @param {string} format - Formato deseado ('full', 'date', 'time', 'datetime')
+ * @returns {string} Fecha formateada
+ */
+function formatDateTime(date, format = 'datetime') {
+    const dateObj = typeof date === 'string' ? new Date(date) : date;
+    
+    const options = {
+        full: {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            weekday: 'long'
+        },
+        date: {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        },
+        time: {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        },
+        datetime: {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        }
+    };
+
+    return new Intl.DateTimeFormat('es-MX', options[format]).format(dateObj);
+}
+
+/**
+ * Obtener fecha actual en formato ISO
+ * @returns {string} Fecha en formato ISO
+ */
+function getCurrentDateTime() {
+    return new Date().toISOString();
+}
+
+/**
+ * Calcular diferencia entre dos fechas
+ * @param {Date} startDate - Fecha inicial
+ * @param {Date} endDate - Fecha final
+ * @returns {Object} Objeto con días, horas, minutos
+ */
+function getTimeDifference(startDate, endDate) {
+    const diff = Math.abs(endDate - startDate);
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    return { days, hours, minutes };
+}
+
+// ========================================
+// UTILIDADES DE VALIDACIÓN
+// ========================================
+
+/**
+ * Validar formato de email
+ * @param {string} email - Email a validar
+ * @returns {boolean} True si es válido
+ */
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+/**
+ * Validar formato de matrícula/ID de estudiante
+ * @param {string} studentId - ID a validar
+ * @returns {boolean} True si es válido
+ */
+function isValidStudentId(studentId) {
+    // Formato: letras seguidas de números (ej: UTSH2024001)
+    const idRegex = /^[A-Z]{2,6}\d{4,8}$/;
+    return idRegex.test(studentId.toUpperCase());
+}
+
+/**
+ * Validar contraseña segura
+ * @param {string} password - Contraseña a validar
+ * @returns {Object} Objeto con isValid y mensajes
+ */
+function validatePassword(password) {
+    const result = {
+        isValid: true,
+        messages: []
+    };
+
+    if (password.length < 8) {
+        result.isValid = false;
+        result.messages.push('Debe tener al menos 8 caracteres');
+    }
+
+    if (!/[A-Z]/.test(password)) {
+        result.isValid = false;
+        result.messages.push('Debe tener al menos una mayúscula');
+    }
+
+    if (!/[a-z]/.test(password)) {
+        result.isValid = false;
+        result.messages.push('Debe tener al menos una minúscula');
+    }
+
+    if (!/\d/.test(password)) {
+        result.isValid = false;
+        result.messages.push('Debe tener al menos un número');
+    }
+
+    return result;
+}
+
+// ========================================
+// UTILIDADES DE ALMACENAMIENTO LOCAL
+// ========================================
+
+/**
+ * Guardar datos en localStorage de forma segura
+ * @param {string} key - Clave para guardar
+ * @param {any} data - Datos a guardar
+ * @returns {boolean} True si se guardó correctamente
+ */
+function saveToLocalStorage(key, data) {
+    try {
+        const serializedData = JSON.stringify(data);
+        localStorage.setItem(`checkU_${key}`, serializedData);
+        return true;
+    } catch (error) {
+        console.error('Error al guardar en localStorage:', error);
+        return false;
+    }
+}
+
+/**
+ * Obtener datos de localStorage
+ * @param {string} key - Clave a buscar
+ * @param {any} defaultValue - Valor por defecto si no existe
+ * @returns {any} Datos encontrados o valor por defecto
+ */
+function getFromLocalStorage(key, defaultValue = null) {
+    try {
+        const serializedData = localStorage.getItem(`checkU_${key}`);
+        return serializedData ? JSON.parse(serializedData) : defaultValue;
+    } catch (error) {
+        console.error('Error al leer de localStorage:', error);
+        return defaultValue;
+    }
+}
+
+/**
+ * Eliminar datos de localStorage
+ * @param {string} key - Clave a eliminar
+ */
+function removeFromLocalStorage(key) {
+    try {
+        localStorage.removeItem(`checkU_${key}`);
+    } catch (error) {
+        console.error('Error al eliminar de localStorage:', error);
+    }
+}
+
+// ========================================
+// UTILIDADES DE UI/UX
+// ========================================
+
+/**
+ * Mostrar notificación toast
+ * @param {string} message - Mensaje a mostrar
+ * @param {string} type - Tipo: 'success', 'error', 'info', 'warning'
+ * @param {number} duration - Duración en milisegundos
+ */
+function showToast(message, type = 'info', duration = 3000) {
+    // Remover toast anterior si existe
+    const existingToast = document.getElementById('toast-notification');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    // Crear el toast
+    const toast = document.createElement('div');
+    toast.id = 'toast-notification';
+    toast.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 translate-x-full`;
+    
+    // Estilos según el tipo
+    const styles = {
+        success: 'bg-green-500 bg-opacity-90 text-white border-l-4 border-green-600',
+        error: 'bg-red-500 bg-opacity-90 text-white border-l-4 border-red-600',
+        warning: 'bg-yellow-500 bg-opacity-90 text-white border-l-4 border-yellow-600',
+        info: 'bg-blue-500 bg-opacity-90 text-white border-l-4 border-blue-600'
+    };
+
+    toast.className += ` ${styles[type]}`;
+
+    // Iconos según el tipo
+    const icons = {
+        success: '✅',
+        error: '❌',
+        warning: '⚠️',
+        info: 'ℹ️'
+    };
+
+    toast.innerHTML = `
+        <div class="flex items-center">
+            <span class="text-xl mr-3">${icons[type]}</span>
+            <p class="flex-1">${message}</p>
+            <button onclick="this.parentElement.parentElement.remove()" class="ml-4 text-white hover:text-gray-200">
+                ✕
+            </button>
+        </div>
+    `;
+
+    // Agregar al DOM
+    document.body.appendChild(toast);
+
+    // Animación de entrada
+    setTimeout(() => {
+        toast.classList.remove('translate-x-full');
+    }, 100);
+
+    // Auto-remover después del tiempo especificado
+    setTimeout(() => {
+        toast.classList.add('translate-x-full');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }, duration);
+}
+
+/**
+ * Mostrar modal de confirmación
+ * @param {string} title - Título del modal
+ * @param {string} message - Mensaje del modal
+ * @param {Function} onConfirm - Callback cuando se confirma
+ * @param {Function} onCancel - Callback cuando se cancela
+ */
+function showConfirmModal(title, message, onConfirm, onCancel = null) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+    
+    modal.innerHTML = `
+        <div class="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">${title}</h3>
+            <p class="text-gray-600 mb-6">${message}</p>
+            <div class="flex justify-end space-x-3">
+                <button id="cancelBtn" class="px-4 py-2 text-gray-600 hover:text-gray-800 transition">
+                    Cancelar
+                </button>
+                <button id="confirmBtn" class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Event listeners
+    modal.querySelector('#confirmBtn').addEventListener('click', () => {
+        modal.remove();
+        if (onConfirm) onConfirm();
+    });
+
+    modal.querySelector('#cancelBtn').addEventListener('click', () => {
+        modal.remove();
+        if (onCancel) onCancel();
+    });
+
+    // Cerrar con ESC o click fuera
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.remove();
+            if (onCancel) onCancel();
+        }
+    });
+
+    document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', escHandler);
+            if (onCancel) onCancel();
+        }
+    });
+}
+
+/**
+ * Crear loader/spinner de carga
+ * @param {string} message - Mensaje a mostrar
+ * @returns {HTMLElement} Elemento del loader
+ */
+function createLoader(message = 'Cargando...') {
+    const loader = document.createElement('div');
+    loader.className = 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50';
+    
+    loader.innerHTML = `
+        <div class="bg-white rounded-lg p-6 flex flex-col items-center">
+            <div class="loading-spinner mb-4"></div>
+            <p class="text-gray-600">${message}</p>
+        </div>
+    `;
+
+    return loader;
+}
+
+// ========================================
+// UTILIDADES DE RED/API
+// ========================================
+
+/**
+ * Realizar petición HTTP con manejo de errores
+ * @param {string} url - URL de la petición
+ * @param {Object} options - Opciones de fetch
+ * @returns {Promise} Promesa con la respuesta
+ */
+async function apiRequest(url, options = {}) {
+    try {
+        // Configurar headers por defecto
+        const defaultOptions = {
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            },
+            ...options
+        };
+
+        // Agregar token de autorización si existe
+        const sessionData = getFromLocalStorage('session');
+        if (sessionData && sessionData.token) {
+            defaultOptions.headers['Authorization'] = `Bearer ${sessionData.token}`;
+        }
+
+        const response = await fetch(url, defaultOptions);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return { success: true, data };
+
+    } catch (error) {
+        console.error('Error en petición API:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+/**
+ * Verificar conexión a internet
+ * @returns {Promise<boolean>} True si hay conexión
+ */
+async function checkInternetConnection() {
+    try {
+        const response = await fetch('/api/health', { 
+            method: 'HEAD',
+            cache: 'no-cache'
+        });
+        return response.ok;
+    } catch {
+        return false;
+    }
+}
+
+// ========================================
+// UTILIDADES DE ARCHIVOS/EXPORTACIÓN
+// ========================================
+
+/**
+ * Descargar datos como archivo CSV
+ * @param {Array} data - Array de objetos con los datos
+ * @param {string} filename - Nombre del archivo
+ */
+function downloadCSV(data, filename = 'datos.csv') {
+    if (!data || data.length === 0) {
+        showToast('No hay datos para exportar', 'warning');
+        return;
+    }
+
+    // Obtener headers de las claves del primer objeto
+    const headers = Object.keys(data[0]);
+    
+    // Crear contenido CSV
+    let csvContent = headers.join(',') + '\n';
+    
+    data.forEach(row => {
+        const values = headers.map(header => {
+            const value = row[header];
+            // Escapar comillas y envolver en comillas si contiene comas
+            return typeof value === 'string' && value.includes(',') 
+                ? `"${value.replace(/"/g, '""')}"` 
+                : value;
+        });
+        csvContent += values.join(',') + '\n';
+    });
+
+    // Crear y descargar archivo
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    
+    link.setAttribute('href', url);
+    link.setAttribute('download', filename);
+    link.style.visibility = 'hidden';
+    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+/**
+ * Leer archivo como texto
+ * @param {File} file - Archivo a leer
+ * @returns {Promise<string>} Contenido del archivo
+ */
+function readFileAsText(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsText(file);
+    });
+}
+
+// ========================================
+// UTILIDADES DE DISPOSITIVO
+// ========================================
+
+/**
+ * Detectar si es dispositivo móvil
+ * @returns {boolean} True si es móvil
+ */
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+/**
+ * Verificar si el navegador soporta cámaras
+ * @returns {boolean} True si soporta getUserMedia
+ */
+function supportsCameraAccess() {
+    return !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+}
+
+/**
+ * Obtener información del navegador
+ * @returns {Object} Información del navegador y SO
+ */
+function getBrowserInfo() {
+    const ua = navigator.userAgent;
+    let browser = 'Unknown';
+    let version = 'Unknown';
+
+    if (ua.includes('Chrome')) {
+        browser = 'Chrome';
+        version = ua.match(/Chrome\/(\d+)/)?.[1] || 'Unknown';
+    } else if (ua.includes('Firefox')) {
+        browser = 'Firefox';
+        version = ua.match(/Firefox\/(\d+)/)?.[1] || 'Unknown';
+    } else if (ua.includes('Safari') && !ua.includes('Chrome')) {
+        browser = 'Safari';
+        version = ua.match(/Version\/(\d+)/)?.[1] || 'Unknown';
+    }
+
+    return {
+        browser,
+        version,
+        userAgent: ua,
+        isMobile: isMobileDevice(),
+        supportsCamera: supportsCameraAccess()
+    };
+}
+
+// ========================================
+// INICIALIZACIÓN Y EVENTOS GLOBALES
+// ========================================
+
+// Agregar listeners globales cuando se carga el DOM
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('Utils.js cargado correctamente');
+    
+    // Agregar información de debug en desarrollo
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+        console.log('Información del navegador:', getBrowserInfo());
+    }
+});
+
+// Hacer funciones disponibles globalmente
+window.CheckUUtils = {
+    formatDateTime,
+    getCurrentDateTime,
+    getTimeDifference,
+    isValidEmail,
+    isValidStudentId,
+    validatePassword,
+    saveToLocalStorage,
+    getFromLocalStorage,
+    removeFromLocalStorage,
+    showToast,
+    showConfirmModal,
+    createLoader,
+    apiRequest,
+    checkInternetConnection,
+    downloadCSV,
+    readFileAsText,
+    isMobileDevice,
+    supportsCameraAccess,
+    getBrowserInfo
+};
+-----------------------------------------------
+-----------------------------------------------
+-----------------------------------------------
+🎯 Características principales que ya tienes:
+Sistema de Login:
+
+Validación en tiempo real
+Bloqueo por intentos fallidos
+Modo "recordar sesión"
+Credenciales de prueba: admin / admin123
+Diseño responsive y futurista
+
+Funcionalidades de Seguridad:
+
+Autenticación con JWT (simulado)
+Verificación de sesiones
+Redirección automática
+Manejo de errores
+
+🚀 Siguiente paso sugerido:
+¿Quieres que creemos el Panel Administrativo (dashboard.html) ahora? Será la página principal donde los administradores:
+
+Verán estadísticas de asistencia
+Gestionarán usuarios
+Generarán reportes
+Administrarán códigos QR
